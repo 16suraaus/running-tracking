@@ -14,7 +14,24 @@ export async function GET() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
     `;
-    return NextResponse.json({ result }, { status: 200 });
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS shoes (
+        id SERIAL PRIMARY KEY,
+        brand VARCHAR(100) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        is_default BOOLEAN DEFAULT FALSE,
+        retired BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
+    const alterType = await sql`ALTER TABLE runs ADD COLUMN IF NOT EXISTS type VARCHAR(50) DEFAULT 'regular';`;
+    const alterIntervals = await sql`ALTER TABLE runs ADD COLUMN IF NOT EXISTS intervals JSONB;`;
+    const alterShoe = await sql`ALTER TABLE runs ADD COLUMN IF NOT EXISTS shoe_id INTEGER REFERENCES shoes(id) ON DELETE SET NULL;`;
+    const alterRPE = await sql`ALTER TABLE runs ADD COLUMN IF NOT EXISTS rpe INTEGER;`;
+
+    return NextResponse.json({ result: 'Success', setup: 'Completed DB Migration' }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

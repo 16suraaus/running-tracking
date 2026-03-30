@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { History, PlusCircle } from 'lucide-react';
+import { History, PlusCircle, BarChart2, Tag } from 'lucide-react';
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -18,10 +18,20 @@ export default function BottomNav() {
       href: '/add',
       icon: PlusCircle,
     },
+    {
+      label: 'Stats',
+      href: '/stats',
+      icon: BarChart2,
+    },
+    {
+      label: 'Gear',
+      href: '/shoes',
+      icon: Tag,
+    },
   ];
 
   return (
-    <nav className="absolute bottom-0 w-full max-w-md bg-[#121212]/90 backdrop-blur-md border-t border-gray-800">
+    <nav className="w-full bg-[#121212]/90 backdrop-blur-md border-t border-gray-800 z-50">
       <div className="flex justify-around items-center h-20 px-4 pb-4">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
