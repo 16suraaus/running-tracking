@@ -157,6 +157,9 @@ export default function ShoesPage() {
               <div className="flex justify-between items-start">
                 <div>
                   <h4 className="text-lg font-black text-white">{shoe.brand} {shoe.name}</h4>
+                  <div className="text-sm font-bold text-purple-400 mt-1 flex items-center">
+                    👟 {Number(Number(shoe.total_distance || 0).toFixed(2))} mi logged
+                  </div>
                   {shoe.is_default && (
                     <span className="inline-flex items-center mt-2 px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest uppercase bg-blue-500/20 text-blue-400">
                       <CheckCircle size={10} className="mr-1" strokeWidth={3} />

@@ -4,9 +4,19 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     const { rows } = await sql`
-      SELECT * FROM shoes
-      WHERE retired = FALSE
-      ORDER BY is_default DESC, created_at DESC;
+      SELECT 
+        shoes.*,
+        COALESCE(SUM(
+          CASE 
+            WHEN runs.unit = 'km' THEN runs.distance * 0.621371 
+            ELSE runs.distance 
+          END
+        ), 0) as total_distance
+      FROM shoes
+      LEFT JOIN runs ON shoes.id = runs.shoe_id
+      WHERE shoes.retired = FALSE
+      GROUP BY shoes.id
+      ORDER BY shoes.is_default DESC, shoes.created_at DESC;
     `;
     return NextResponse.json(rows, { status: 200 });
   } catch (error) {

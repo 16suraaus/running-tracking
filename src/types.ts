@@ -29,4 +29,5 @@ export interface Shoe {
   name: string;
   is_default: boolean;
   retired: boolean;
+  total_distance?: number;
 }
